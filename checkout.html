@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — Arts Fashion BD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">Free delivery inside Dhaka on orders above &#2547;2,000</div>
+<header class="site-header">
+  <div class="logo">
+    <div class="logo-mark">A</div>
+    <div class="logo-text">ARTS FASHION<small>SPORTSWEAR &amp; CUSTOM JERSEYS</small></div>
+  </div>
+  <nav class="site-nav">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="header-actions">
+    <a href="cart.html" class="cart-btn">Cart <span class="cart-count js-cart-count">0</span></a>
+  </div>
+</header>
+
+<div class="page-hero">
+  <h1 class="display">CHECKOUT</h1>
+</div>
+
+<section class="section">
+  <div id="checkoutEmpty" style="display:none;text-align:center;padding:40px 0;color:var(--muted);">
+    <p style="margin-bottom:16px;">Your cart is empty — add something before checking out.</p>
+    <a href="shop.html" class="btn btn-primary">Go to shop</a>
+  </div>
+
+  <div class="form-card" id="checkoutContent" style="max-width:520px;">
+
+    <div class="step active" id="stepShipping">
+      <h3 style="margin-bottom:16px;font-size:17px;">Shipping details</h3>
+      <div class="field"><label>Full name</label><input type="text" id="custName" placeholder="Your full name"></div>
+      <div class="field"><label>Phone number</label><input type="text" id="custPhone" placeholder="01XXXXXXXXX"></div>
+      <div class="field"><label>Delivery address</label><input type="text" id="custAddress" placeholder="House, road, area"></div>
+      <div class="field-row">
+        <div class="field"><label>City</label><input type="text" id="custCity" placeholder="Dhaka"></div>
+        <div class="field"><label>Postal code</label><input type="text" id="custZip" placeholder="1711"></div>
+      </div>
+      <p id="shippingError" style="color:var(--red);font-size:12px;margin-bottom:10px;display:none;">Please fill in all fields.</p>
+      <button class="btn-full" onclick="goToPayment()">Continue to payment</button>
+    </div>
+
+    <div class="step" id="stepPayment">
+      <button style="background:none;color:var(--muted);font-size:13px;font-weight:600;margin-bottom:14px;" onclick="backToShipping()">&larr; Back</button>
+      <h3 style="margin-bottom:12px;font-size:17px;">Payment</h3>
+      <div class="form-note" style="margin-top:0;margin-bottom:16px;">Demo mode — this simulates checkout. No real payment is processed. A live store connects this step to a real gateway (SSLCommerz, bKash, Stripe) through a secure backend.</div>
+      <div class="pay-options">
+        <label class="pay-opt selected" onclick="selectPay(this)"><input type="radio" name="pay" checked> Cash on delivery</label>
+        <label class="pay-opt" onclick="selectPay(this)"><input type="radio" name="pay"> bKash</label>
+        <label class="pay-opt" onclick="selectPay(this)"><input type="radio" name="pay"> Card (Visa/Mastercard)</label>
+      </div>
+      <div class="summary-box" id="orderSummary" style="margin-bottom:16px;"></div>
+      <button class="btn-full" onclick="placeOrder()">Place order</button>
+    </div>
+
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="foot-grid">
+    <div class="foot-col">
+      <h4>Arts Fashion BD</h4>
+      <p>182/2, Mudafa, Tongi, Gazipur-1711</p>
+      <p>Phone: (88) 01911-904618</p>
+      <p>Email: info@artsfashionbd.com</p>
+    </div>
+    <div class="foot-col">
+      <h4>Shop</h4>
+      <a href="shop.html">All products</a>
+      <a href="shop.html?cat=Custom">Custom jerseys</a>
+    </div>
+    <div class="foot-col">
+      <h4>Company</h4>
+      <a href="about.html">About us</a>
+      <a href="contact.html">Contact us</a>
+    </div>
+    <div class="foot-col">
+      <h4>Payment</h4>
+      <p>SSLCommerz secured checkout</p>
+      <p>Cash on delivery available</p>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; 2026 Arts Fashion BD</span>
+    <span>Sample site — for design &amp; build reference</span>
+  </div>
+</footer>
+
+<div class="af-toast" id="afToast"></div>
+<script src="js/store.js"></script>
+<script>
+if(afGetCart().length === 0){
+  document.getElementById('checkoutEmpty').style.display = 'block';
+  document.getElementById('checkoutContent').style.display = 'none';
+}
+
+let selectedPay = 'Cash on delivery';
+
+function goToPayment(){
+  const name = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  const address = document.getElementById('custAddress').value.trim();
+  const city = document.getElementById('custCity').value.trim();
+  const zip = document.getElementById('custZip').value.trim();
+  if(!name || !phone || !address || !city || !zip){
+    document.getElementById('shippingError').style.display = 'block';
+    return;
+  }
+  document.getElementById('shippingError').style.display = 'none';
+  renderOrderSummary();
+  document.getElementById('stepShipping').classList.remove('active');
+  document.getElementById('stepPayment').classList.add('active');
+}
+function backToShipping(){
+  document.getElementById('stepPayment').classList.remove('active');
+  document.getElementById('stepShipping').classList.add('active');
+}
+function selectPay(el){
+  document.querySelectorAll('.pay-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPay = el.textContent.trim();
+}
+function renderOrderSummary(){
+  const subtotal = afCartSubtotal();
+  const delivery = subtotal >= 2000 ? 0 : 80;
+  document.getElementById('orderSummary').innerHTML = `
+    <div class="row"><span>Items (${afCartCount()})</span><span>${afMoney(subtotal)}</span></div>
+    <div class="row"><span>Delivery</span><span>${delivery === 0 ? 'Free' : afMoney(delivery)}</span></div>
+    <div class="row grand"><span>Total</span><span>${afMoney(subtotal + delivery)}</span></div>
+  `;
+}
+function placeOrder(){
+  const name = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  const address = document.getElementById('custAddress').value.trim() + ', ' + document.getElementById('custCity').value.trim();
+  const items = afGetCart().map(i => ({id:i.id, name:i.name, sku:i.sku, price:i.price, qty:i.qty}));
+
+  const invoice = afCreateInvoice({
+    channel:'Online', customer:name, phone, address,
+    items, payStatus: selectedPay === 'Cash on delivery' ? 'due' : 'paid'
+  });
+
+  afClearCart();
+  sessionStorage.setItem('af_last_order', invoice.number);
+  window.location.href = 'order-confirmation.html';
+}
+</script>
+</body>
+</html>

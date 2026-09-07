@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Cart — Arts Fashion BD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">Free delivery inside Dhaka on orders above &#2547;2,000</div>
+<header class="site-header">
+  <div class="logo">
+    <div class="logo-mark">A</div>
+    <div class="logo-text">ARTS FASHION<small>SPORTSWEAR &amp; CUSTOM JERSEYS</small></div>
+  </div>
+  <nav class="site-nav">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="header-actions">
+    <a href="cart.html" class="cart-btn">Cart <span class="cart-count js-cart-count">0</span></a>
+  </div>
+</header>
+
+<div class="page-hero">
+  <h1 class="display">YOUR CART</h1>
+</div>
+
+<section class="section">
+  <div id="cartEmptyState" style="display:none;text-align:center;padding:50px 0;color:var(--muted);">
+    <p style="margin-bottom:16px;">Your cart is empty.</p>
+    <a href="shop.html" class="btn btn-primary">Continue shopping</a>
+  </div>
+
+  <div class="cart-page-grid" id="cartContent">
+    <table class="cart-table">
+      <thead><tr><th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th><th></th></tr></thead>
+      <tbody id="cartTableBody"></tbody>
+    </table>
+
+    <div class="summary-box">
+      <div class="row"><span>Subtotal</span><span id="sumSubtotal">৳0</span></div>
+      <div class="row"><span>Delivery</span><span id="sumDelivery">৳0</span></div>
+      <div class="row grand"><span>Total</span><span id="sumTotal">৳0</span></div>
+      <a href="checkout.html" class="btn-full" style="display:block;text-align:center;margin-top:14px;">Proceed to checkout</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="foot-grid">
+    <div class="foot-col">
+      <h4>Arts Fashion BD</h4>
+      <p>182/2, Mudafa, Tongi, Gazipur-1711</p>
+      <p>Phone: (88) 01911-904618</p>
+      <p>Email: info@artsfashionbd.com</p>
+    </div>
+    <div class="foot-col">
+      <h4>Shop</h4>
+      <a href="shop.html">All products</a>
+      <a href="shop.html?cat=Custom">Custom jerseys</a>
+    </div>
+    <div class="foot-col">
+      <h4>Company</h4>
+      <a href="about.html">About us</a>
+      <a href="contact.html">Contact us</a>
+    </div>
+    <div class="foot-col">
+      <h4>Payment</h4>
+      <p>SSLCommerz secured checkout</p>
+      <p>Cash on delivery available</p>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; 2026 Arts Fashion BD</span>
+    <span>Sample site — for design &amp; build reference</span>
+  </div>
+</footer>
+
+<div class="af-toast" id="afToast"></div>
+<script src="js/store.js"></script>
+<script>
+function renderCart(){
+  const cart = afGetCart();
+  if(cart.length === 0){
+    document.getElementById('cartEmptyState').style.display = 'block';
+    document.getElementById('cartContent').style.display = 'none';
+    return;
+  }
+  document.getElementById('cartEmptyState').style.display = 'none';
+  document.getElementById('cartContent').style.display = 'grid';
+
+  document.getElementById('cartTableBody').innerHTML = cart.map(i => `
+    <tr>
+      <td>
+        <strong>${i.name}</strong>
+        ${i.size || i.color ? `<div style="font-size:11px;color:var(--muted);margin-top:3px;">
+          ${i.size ? 'Size: ' + i.size : ''} ${i.color ? '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+i.color+';vertical-align:-1px;border:1px solid #ccc;margin-left:6px;"></span>' : ''}
+        </div>` : ''}
+      </td>
+      <td>${afMoney(i.price)}</td>
+      <td>
+        <span class="qty-row" style="margin-top:0;">
+          <button class="qty-btn" onclick="changeQty('${i.variantId}',-1)">&minus;</button>
+          <span>${i.qty}</span>
+          <button class="qty-btn" onclick="changeQty('${i.variantId}',1)">+</button>
+        </span>
+      </td>
+      <td>${afMoney(i.price * i.qty)}</td>
+      <td><span class="remove-link" onclick="removeItem('${i.variantId}')">Remove</span></td>
+    </tr>
+  `).join('');
+
+  const subtotal = afCartSubtotal();
+  const delivery = subtotal >= 2000 ? 0 : 80;
+  document.getElementById('sumSubtotal').textContent = afMoney(subtotal);
+  document.getElementById('sumDelivery').textContent = delivery === 0 ? 'Free' : afMoney(delivery);
+  document.getElementById('sumTotal').textContent = afMoney(subtotal + delivery);
+}
+
+function changeQty(variantId, delta){
+  afChangeCartQty(variantId, delta);
+  afUpdateCartBadge();
+  renderCart();
+}
+function removeItem(variantId){
+  afRemoveFromCart(variantId);
+  afUpdateCartBadge();
+  renderCart();
+}
+
+renderCart();
+</script>
+</body>
+</html>

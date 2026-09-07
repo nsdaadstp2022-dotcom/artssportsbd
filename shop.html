@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop — Arts Fashion BD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">Free delivery inside Dhaka on orders above &#2547;2,000</div>
+<header class="site-header">
+  <div class="logo">
+    <div class="logo-mark">A</div>
+    <div class="logo-text">ARTS FASHION<small>SPORTSWEAR &amp; CUSTOM JERSEYS</small></div>
+  </div>
+  <nav class="site-nav">
+    <a href="index.html">Home</a>
+    <a href="shop.html" class="active">Shop</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="header-actions">
+    <a href="cart.html" class="cart-btn">Cart <span class="cart-count js-cart-count">0</span></a>
+  </div>
+</header>
+
+<div class="page-hero">
+  <h1 class="display">SHOP ALL PRODUCTS</h1>
+  <p>Jerseys, sportswear and custom prints — browse the full collection</p>
+</div>
+
+<section class="section">
+  <div class="filter-bar" id="filterBar"></div>
+  <div class="grid" id="shopGrid"></div>
+</section>
+
+<footer class="site-footer">
+  <div class="foot-grid">
+    <div class="foot-col">
+      <h4>Arts Fashion BD</h4>
+      <p>182/2, Mudafa, Tongi, Gazipur-1711</p>
+      <p>Phone: (88) 01911-904618</p>
+      <p>Email: info@artsfashionbd.com</p>
+    </div>
+    <div class="foot-col">
+      <h4>Shop</h4>
+      <a href="shop.html">All products</a>
+      <a href="shop.html?cat=Custom">Custom jerseys</a>
+    </div>
+    <div class="foot-col">
+      <h4>Company</h4>
+      <a href="about.html">About us</a>
+      <a href="contact.html">Contact us</a>
+    </div>
+    <div class="foot-col">
+      <h4>Payment</h4>
+      <p>SSLCommerz secured checkout</p>
+      <p>Cash on delivery available</p>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; 2026 Arts Fashion BD</span>
+    <span>Sample site — for design &amp; build reference</span>
+  </div>
+</footer>
+
+<div class="af-toast" id="afToast"></div>
+
+<script src="js/store.js"></script>
+<script>
+function getParam(name){
+  return new URLSearchParams(window.location.search).get(name);
+}
+
+let activeCat = getParam('cat') || 'All';
+
+function renderFilters(){
+  const products = afGetProducts();
+  const cats = ['All', ...new Set(products.map(p => p.cat))];
+  document.getElementById('filterBar').innerHTML = cats.map(c =>
+    `<div class="filter-chip ${c === activeCat ? 'active' : ''}" onclick="setFilter('${c}')">${c}</div>`
+  ).join('');
+}
+
+function setFilter(cat){
+  activeCat = cat;
+  renderFilters();
+  renderShop();
+}
+
+function renderShop(){
+  const products = afGetProducts();
+  const filtered = activeCat === 'All' ? products : products.filter(p => p.cat === activeCat);
+  document.getElementById('shopGrid').innerHTML = filtered.map(p => `
+    <div class="card">
+      <div class="card-media" onclick="location.href='product.html?id=${p.id}'">
+        ${p.badge ? `<div class="card-badge">${p.badge}</div>` : ''}
+        ${p.stock <= 0 ? `<div class="card-oos">Out of stock</div>` : ''}
+        ${afJerseySvg(p.label, 80)}
+      </div>
+      <div class="card-body">
+        <div class="card-cat">${p.cat}</div>
+        <div class="card-name" onclick="location.href='product.html?id=${p.id}'">${p.name}</div>
+        <div class="card-price">${afMoney(p.price)}</div>
+        <div class="card-actions">
+          <a href="product.html?id=${p.id}" class="btn-sm btn-outline">View</a>
+          <button class="btn-sm btn-solid" ${p.stock<=0?'disabled':''} onclick="quickAdd(${p.id})">Add to cart</button>
+        </div>
+      </div>
+    </div>
+  `).join('') || `<p style="color:var(--muted);grid-column:1/-1;">No products in this category.</p>`;
+}
+
+function quickAdd(id){
+  const p = afGetProducts().find(p => p.id === id);
+  afAddToCart(p, null, null, 1);
+  afUpdateCartBadge();
+  afShowToast(p.name + ' added to cart');
+}
+
+renderFilters();
+renderShop();
+</script>
+</body>
+</html>

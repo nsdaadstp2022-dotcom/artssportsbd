@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us — Arts Fashion BD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">Free delivery inside Dhaka on orders above &#2547;2,000</div>
+<header class="site-header">
+  <div class="logo">
+    <div class="logo-mark">A</div>
+    <div class="logo-text">ARTS FASHION<small>SPORTSWEAR &amp; CUSTOM JERSEYS</small></div>
+  </div>
+  <nav class="site-nav">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+    <a href="contact.html" class="active">Contact</a>
+  </nav>
+  <div class="header-actions">
+    <a href="cart.html" class="cart-btn">Cart <span class="cart-count js-cart-count">0</span></a>
+  </div>
+</header>
+
+<div class="page-hero">
+  <h1 class="display">CONTACT US</h1>
+  <p>Questions about an order, bulk pricing, or custom jerseys? Reach out.</p>
+</div>
+
+<section class="section">
+  <div class="info-grid">
+    <div class="info-card">
+      <h4>Visit us</h4>
+      <p>182/2, Mudafa, Tongi, Gazipur-1711, Bangladesh</p>
+    </div>
+    <div class="info-card">
+      <h4>Call or WhatsApp</h4>
+      <p>+880 1911-904618</p>
+    </div>
+    <div class="info-card">
+      <h4>Email</h4>
+      <p>info@artsfashionbd.com</p>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h3 style="margin-bottom:18px;font-size:18px;">Send us a message</h3>
+    <div id="contactForm">
+      <div class="field-row">
+        <div class="field"><label>Full name</label><input type="text" id="cName" placeholder="Your name"></div>
+        <div class="field"><label>Phone or email</label><input type="text" id="cContact" placeholder="How we can reach you"></div>
+      </div>
+      <div class="field"><label>Subject</label>
+        <select id="cSubject">
+          <option>General enquiry</option>
+          <option>Bulk / team order</option>
+          <option>Order status</option>
+          <option>Custom jersey request</option>
+        </select>
+      </div>
+      <div class="field"><label>Message</label><textarea id="cMessage" rows="5" placeholder="How can we help?"></textarea></div>
+      <p id="contactError" style="color:var(--red);font-size:12px;display:none;margin-bottom:10px;">Please fill in your name, contact info, and message.</p>
+      <button class="btn btn-primary" onclick="submitContact()">Send message</button>
+      <div class="form-note">Demo form — this simulates a submission locally. A live site connects this to email/SMS or a CRM through a backend.</div>
+    </div>
+    <div id="contactSuccess" style="display:none;text-align:center;padding:20px 0;">
+      <div class="success-icon">&#10003;</div>
+      <h3 style="margin-bottom:6px;">Message received</h3>
+      <p style="color:var(--muted);font-size:13px;">We'll get back to you shortly.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="foot-grid">
+    <div class="foot-col">
+      <h4>Arts Fashion BD</h4>
+      <p>182/2, Mudafa, Tongi, Gazipur-1711</p>
+      <p>Phone: (88) 01911-904618</p>
+      <p>Email: info@artsfashionbd.com</p>
+    </div>
+    <div class="foot-col">
+      <h4>Shop</h4>
+      <a href="shop.html">All products</a>
+      <a href="shop.html?cat=Custom">Custom jerseys</a>
+    </div>
+    <div class="foot-col">
+      <h4>Company</h4>
+      <a href="about.html">About us</a>
+      <a href="contact.html">Contact us</a>
+    </div>
+    <div class="foot-col">
+      <h4>Payment</h4>
+      <p>SSLCommerz secured checkout</p>
+      <p>Cash on delivery available</p>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; 2026 Arts Fashion BD</span>
+    <span>Sample site — for design &amp; build reference</span>
+  </div>
+</footer>
+
+<div class="af-toast" id="afToast"></div>
+<script src="js/store.js"></script>
+<script>
+function submitContact(){
+  const name = document.getElementById('cName').value.trim();
+  const contact = document.getElementById('cContact').value.trim();
+  const message = document.getElementById('cMessage').value.trim();
+  if(!name || !contact || !message){
+    document.getElementById('contactError').style.display = 'block';
+    return;
+  }
+  document.getElementById('contactForm').style.display = 'none';
+  document.getElementById('contactSuccess').style.display = 'block';
+}
+</script>
+</body>
+</html>

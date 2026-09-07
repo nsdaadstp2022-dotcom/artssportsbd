@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Confirmed — Arts Fashion BD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">Free delivery inside Dhaka on orders above &#2547;2,000</div>
+<header class="site-header">
+  <div class="logo">
+    <div class="logo-mark">A</div>
+    <div class="logo-text">ARTS FASHION<small>SPORTSWEAR &amp; CUSTOM JERSEYS</small></div>
+  </div>
+  <nav class="site-nav">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="header-actions">
+    <a href="cart.html" class="cart-btn">Cart <span class="cart-count js-cart-count">0</span></a>
+  </div>
+</header>
+
+<section class="section">
+  <div class="form-card" style="max-width:480px;margin:0 auto;">
+    <div class="success-box">
+      <div class="success-icon">&#10003;</div>
+      <h2 style="margin-bottom:8px;">Order placed successfully</h2>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:4px;">Order ID: <strong id="orderId"></strong></p>
+      <p style="color:var(--muted);font-size:13px;">A confirmation would normally be sent by SMS or email.</p>
+      <a href="shop.html" class="btn btn-primary" style="margin-top:22px;">Continue shopping</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="foot-grid">
+    <div class="foot-col">
+      <h4>Arts Fashion BD</h4>
+      <p>182/2, Mudafa, Tongi, Gazipur-1711</p>
+      <p>Phone: (88) 01911-904618</p>
+      <p>Email: info@artsfashionbd.com</p>
+    </div>
+    <div class="foot-col">
+      <h4>Shop</h4>
+      <a href="shop.html">All products</a>
+      <a href="shop.html?cat=Custom">Custom jerseys</a>
+    </div>
+    <div class="foot-col">
+      <h4>Company</h4>
+      <a href="about.html">About us</a>
+      <a href="contact.html">Contact us</a>
+    </div>
+    <div class="foot-col">
+      <h4>Payment</h4>
+      <p>SSLCommerz secured checkout</p>
+      <p>Cash on delivery available</p>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; 2026 Arts Fashion BD</span>
+    <span>Sample site — for design &amp; build reference</span>
+  </div>
+</footer>
+
+<div class="af-toast" id="afToast"></div>
+<script src="js/store.js"></script>
+<script>
+const orderId = sessionStorage.getItem('af_last_order') || 'N/A';
+document.getElementById('orderId').textContent = orderId;
+if(orderId === 'N/A'){
+  document.querySelector('.success-box h2').textContent = 'No recent order found';
+  document.querySelector('.success-box p').textContent = 'Place an order from the shop to see a confirmation here.';
+}
+</script>
+</body>
+</html>

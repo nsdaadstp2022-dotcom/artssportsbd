@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arts Fashion BD — Sportswear &amp; Custom Jerseys</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">Free delivery inside Dhaka on orders above &#2547;2,000</div>
+<header class="site-header">
+  <div class="logo">
+    <div class="logo-mark">A</div>
+    <div class="logo-text">ARTS FASHION<small>SPORTSWEAR &amp; CUSTOM JERSEYS</small></div>
+  </div>
+  <nav class="site-nav">
+    <a href="index.html" class="active">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="header-actions">
+    <a href="cart.html" class="cart-btn">Cart <span class="cart-count js-cart-count">0</span></a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-copy">
+    <div class="hero-eyebrow">2026 WORLD CUP EDITION — NOW LIVE</div>
+    <h1 class="hero-title display">YOUR NAME.<br>YOUR NUMBER.<br><em>YOUR JERSEY.</em></h1>
+    <p class="hero-desc">Premium sublimation-printed jerseys, polos and sportswear — customised with your name, number and team logo. Made in Bangladesh, delivered nationwide.</p>
+    <div class="hero-actions">
+      <a href="shop.html?cat=Custom" class="btn btn-primary">Design your jersey</a>
+      <a href="shop.html" class="btn btn-outline-light">Browse collection</a>
+    </div>
+  </div>
+  <div class="jersey-art">
+    <svg viewBox="0 0 100 110" style="width:220px;height:240px;">
+      <path d="M20 10 L35 2 L50 12 L65 2 L80 10 L95 28 L82 42 L78 34 L78 100 L22 100 L22 34 L18 42 L5 28 Z" fill="#C8283B" stroke="#8E1B29" stroke-width="1.5"/>
+      <path d="M35 2 L50 12 L65 2 L60 8 L50 16 L40 8 Z" fill="#10151F"/>
+      <text x="50" y="70" text-anchor="middle" font-family="Anton" font-size="34" fill="#F6F4EF">7</text>
+    </svg>
+  </div>
+</section>
+
+<div class="cats">
+  <a class="cat" href="shop.html?cat=Custom"><span>27</span>Custom</a>
+  <a class="cat" href="shop.html?cat=Men"><span>08</span>Men</a>
+  <a class="cat" href="shop.html?cat=Women"><span>01</span>Women</a>
+  <a class="cat" href="shop.html?cat=Kids"><span>02</span>Kids</a>
+  <a class="cat" href="shop.html?cat=Sports"><span>08</span>Sports</a>
+</div>
+
+<section class="section">
+  <div class="section-head">
+    <div class="section-title display">FEATURED PRODUCTS</div>
+    <a class="section-link" href="shop.html">View all &rarr;</a>
+  </div>
+  <div class="grid" id="featuredGrid"></div>
+</section>
+
+<div class="custom-banner">
+  <div>
+    <h3 class="display">CUSTOMISE ANY JERSEY</h3>
+    <p>Add your name, number and team logo. Digital sublimation printing, premium fabric, minimum order 10 pieces — perfect for teams and events.</p>
+  </div>
+  <a href="shop.html?cat=Custom" class="btn btn-white">Start customising</a>
+</div>
+
+<footer class="site-footer">
+  <div class="foot-grid">
+    <div class="foot-col">
+      <h4>Arts Fashion BD</h4>
+      <p>182/2, Mudafa, Tongi, Gazipur-1711</p>
+      <p>Phone: (88) 01911-904618</p>
+      <p>Email: info@artsfashionbd.com</p>
+    </div>
+    <div class="foot-col">
+      <h4>Shop</h4>
+      <a href="shop.html">All products</a>
+      <a href="shop.html?cat=Custom">Custom jerseys</a>
+    </div>
+    <div class="foot-col">
+      <h4>Company</h4>
+      <a href="about.html">About us</a>
+      <a href="contact.html">Contact us</a>
+    </div>
+    <div class="foot-col">
+      <h4>Payment</h4>
+      <p>SSLCommerz secured checkout</p>
+      <p>Cash on delivery available</p>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; 2026 Arts Fashion BD</span>
+    <span>Sample site — for design &amp; build reference</span>
+  </div>
+</footer>
+
+<div class="af-toast" id="afToast"></div>
+
+<script src="js/store.js"></script>
+<script>
+function renderFeatured(){
+  const products = afGetProducts().slice(0, 4);
+  document.getElementById('featuredGrid').innerHTML = products.map(p => `
+    <div class="card">
+      <div class="card-media" onclick="location.href='product.html?id=${p.id}'">
+        ${p.badge ? `<div class="card-badge">${p.badge}</div>` : ''}
+        ${p.stock <= 0 ? `<div class="card-oos">Out of stock</div>` : ''}
+        ${afJerseySvg(p.label, 80)}
+      </div>
+      <div class="card-body">
+        <div class="card-cat">${p.cat}</div>
+        <div class="card-name" onclick="location.href='product.html?id=${p.id}'">${p.name}</div>
+        <div class="card-price">${afMoney(p.price)}</div>
+        <div class="card-actions">
+          <a href="product.html?id=${p.id}" class="btn-sm btn-outline">View</a>
+          <button class="btn-sm btn-solid" ${p.stock<=0?'disabled':''} onclick="quickAdd(${p.id})">Add to cart</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+function quickAdd(id){
+  const p = afGetProducts().find(p => p.id === id);
+  afAddToCart(p, null, null, 1);
+  afUpdateCartBadge();
+  afShowToast(p.name + ' added to cart');
+}
+renderFeatured();
+</script>
+</body>
+</html>
